@@ -17,15 +17,15 @@ class Representative < ApplicationRecord
       end
       rep = Representative.find_or_initialize_by(ocdid: ocdid_temp)
       rep.update!(
-	      name: official.name, 
-	      title: title_temp,
-	      address: official.address&.first&.line1,
-	      city: official.address&.first&.city,
-	      state: official.address&.first&.state,
-	      zip: official.address&.first&.zip,
-	      political_party: official.party,
-	      photo_url: official.photo_url
-		 )
+        name:            official.name,
+        title:           title_temp,
+        address:         official.address&.first&.line1,
+        city:            official.address&.first&.city,
+        state:           official.address&.first&.state,
+        zip:             official.address&.first&.zip,
+        political_party: official.party,
+        photo_url:       official.photo_url
+      )
       reps.push(rep)
     end
     reps
