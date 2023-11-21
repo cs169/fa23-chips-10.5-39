@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe MapController, type: :controller do
@@ -24,9 +26,9 @@ RSpec.describe MapController, type: :controller do
   end
 
   describe 'GET #county' do
-    let(:county) { double('County') }  
+    let(:county) { double('County') }
     let(:state) { double('State', counties: [], id: 1) }
-    
+
     before do
       allow(State).to receive(:find_by).and_return(state)
       allow(controller).to receive(:get_requested_county).and_return(county)
