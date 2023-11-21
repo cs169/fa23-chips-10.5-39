@@ -65,6 +65,8 @@ group :development, :test do
   # Report coverage.
   gem 'codecov', require: false
   gem 'simplecov'
+
+  gem 'shoulda-matchers', '~> 5.0'
 end
 
 # Define a group which includes 'linters'
