@@ -25,7 +25,7 @@
                                 %td= rep.state
                                 %td= rep.zip
                                 %td= rep.political_party
-                                %td= rep.photo_url.present? ? image_tag(rep.photo_url) : "No Photo Available"
+                                %td= rep.photo_url.present? ? image_tag(rep.photo_url) : 'No Photo Available'
                                 %td
                                     = link_to representative_news_items_path(rep.id), class: 'btn btn-primary' do
                                         %i.fas.fa-newspaper
