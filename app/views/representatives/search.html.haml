@@ -8,12 +8,24 @@
                         %tr
                             %th Name
                             %th Office
+                            %th Address
+                            %th City
+                            %th State
+                            %th Zip
+                            %th Party
+                            %th Photo
                             %th Links
                     %tbody
                         - @representatives.each_with_index do |rep, _index|
                             %tr
                                 %td= rep.name
                                 %td= rep.title
+                                %td= rep.address
+                                %td= rep.city
+                                %td= rep.state
+                                %td= rep.zip
+                                %td= rep.political_party
+                                %td= rep.photo_url.present? ? image_tag(rep.photo_url) : "No Photo Available"
                                 %td
                                     = link_to representative_news_items_path(rep.id), class: 'btn btn-primary' do
                                         %i.fas.fa-newspaper
