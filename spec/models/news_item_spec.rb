@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # spec/models/news_item_spec.rb
 
 require 'rails_helper'
@@ -7,7 +9,9 @@ RSpec.describe NewsItem, type: :model do
     let(:representative) { Representative.create(name: 'Sample Representative') }
 
     context 'when a news item exists for the representative' do
-      let!(:news_item) { described_class.create(representative: representative, title: 'Sample Title', link: 'sample_link') }
+      let!(:news_item) do
+        described_class.create(representative: representative, title: 'Sample Title', link: 'sample_link')
+      end
 
       it 'finds the news item for the representative' do
         found_item = described_class.find_for(representative.id)
