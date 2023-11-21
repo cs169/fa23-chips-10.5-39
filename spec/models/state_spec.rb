@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-
+# rubocop:disable RSpec/ExampleLength
 RSpec.describe State, type: :model do
   describe 'associations' do
     it 'has many counties' do
@@ -34,3 +34,4 @@ RSpec.describe State, type: :model do
     end
   end
 end
+# rubocop:enable RSpec/ExampleLength
