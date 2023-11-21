@@ -16,18 +16,34 @@ class Representative < ApplicationRecord
         end
       end
       rep = Representative.find_or_initialize_by(ocdid: ocdid_temp)
-      rep.update!(
-        name:            official.name,
-        title:           title_temp,
-        address:         official.address&.first&.line1,
-        city:            official.address&.first&.city,
-        state:           official.address&.first&.state,
-        zip:             official.address&.first&.zip,
-        political_party: official.party,
-        photo_url:       official.photo_url
-      )
-      reps.push(rep)
+      reps.push(update_rep_attributes(rep, official, title_temp))
     end
     reps
+  end
+
+  def self.get_addr(official)
+    return {} if official.address&.first.nil?
+
+    {
+      address: official.address.first.line1,
+      city:    official.address.first.city,
+      state:   official.address.first.state,
+      zip:     official.address.first.zip
+    }
+  end
+
+  def self.update_rep_attributes(rep, official, title)
+    address = get_addr(official)
+    rep.update!(
+      name:            official.name,
+      title:           title,
+      address:         address[:address],
+      city:            address[:city],
+      state:           address[:state],
+      zip:             address[:zip],
+      political_party: official.party,
+      photo_url:       official.photo_url
+    )
+    rep
   end
 end
