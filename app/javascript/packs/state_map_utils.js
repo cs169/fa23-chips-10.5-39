@@ -66,8 +66,8 @@ exports.setupEventHandlers = (stateMap) => {
         const countyName = elem.attr('data-county-name');
         const countyFipsCode = elem.attr('data-county-fips-code');
         const stateName = stateMap.state.symbol;
-        const address = encodeURIComponent(countyName + ',' + countyFipsCode + ',' + stateName);
-        window.location.href = '/search/' + address;
+        const address = encodeURIComponent(`${countyName},${countyFipsCode},${stateName}`);
+        window.location.href = `/search/${address}`;
     };
     mapUtils.handleMapMouseEvents(targets, hoverHtmlProvider, clickCallback);
 };
