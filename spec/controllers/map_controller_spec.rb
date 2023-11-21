@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe MapController, type: :controller do
@@ -10,23 +12,37 @@ RSpec.describe MapController, type: :controller do
   end
 
   describe 'GET #state' do
-    let(:state) { double('State', counties: []) }
+    let(:state) { instance_double(State, counties: []) }
 
-    before do
-      allow(State).to receive(:find_by).and_return(state)
+    context 'when state is found' do
+      before do
+        allow(State).to receive(:find_by).and_return(state)
+      end
+
+      it 'assigns @state and renders state template' do
+        get :state, params: { state_symbol: 'CA' }
+        expect(assigns(:state)).to eq(state)
+        expect(response).to render_template(:state)
+      end
     end
 
-    it 'assigns @state and renders state template' do
-      get :state, params: { state_symbol: 'CA' }
-      expect(assigns(:state)).to eq(state)
-      expect(response).to render_template(:state)
+    context 'when state is not found' do
+      before do
+        allow(State).to receive(:find_by).and_return(nil)
+      end
+
+      it 'redirects to root path with an alert' do
+        get :state, params: { state_symbol: 'CA' }
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to match(/State 'CA' not found./)
+      end
     end
   end
 
   describe 'GET #county' do
-    let(:county) { double('County') }  
-    let(:state) { double('State', counties: [], id: 1) }
-    
+    let(:county) { instance_double(County) }
+    let(:state) { instance_double(State, counties: [], id: 1) }
+
     before do
       allow(State).to receive(:find_by).and_return(state)
       allow(controller).to receive(:get_requested_county).and_return(county)
