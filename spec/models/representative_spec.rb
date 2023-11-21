@@ -45,41 +45,39 @@ RSpec.describe Representative, type: :model do
     # rubocop:enable RSpec/ExampleLength
   end
 
-  context 'all attributes' do
-    let(:rep) { Representative.create(name: 'Test Name', title: 'President', address: '1234 Orange St', city: 'Berkeley', state: 'NY', zip: '91111', political_party: 'Democrat', photo_url: 'http://example.com/test.jpg') }
-    
+  context 'with all attributes' do
+    let(:rep) do
+      described_class.create(name: 'Test Name', title: 'President',
+                             address: '1234 Orange St', city: 'Berkeley', state: 'NY',
+                             zip: '91111', political_party: 'Democrat', photo_url: 'http://example.com/test.jpg')
+    end
+
     it 'has a correct name' do
       expect(rep.name).to eq('Test Name')
     end
+
     it 'has a correct title' do
       expect(rep.title).to eq('President')
     end
+
     it 'has a correct address' do
       expect(rep.address).to eq('1234 Orange St')
     end
+
     it 'has a correct city' do
       expect(rep.city).to eq('Berkeley')
     end
+
     it 'has a correct state' do
       expect(rep.state).to eq('NY')
     end
+
     it 'has a correct zip' do
       expect(rep.zip).to eq('91111')
     end
+
     it 'has a correct party' do
       expect(rep.political_party).to eq('Democrat')
     end
   end
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 end
