@@ -15,7 +15,11 @@ class Representative < ApplicationRecord
           ocdid_temp = office.division_id
         end
       end
-      rep = Representative.find_or_initialize_by(ocdid: ocdid_temp)
+      rep = if Representative.exists?(ocdid: ocdid_temp)
+              Representative.find_or_initialize_by(ocdid: ocdid_temp)
+            else
+              Representative.create!(title: title_temp, ocdid: ocdid_temp)
+            end
       reps.push(update_rep_attributes(rep, official, title_temp))
     end
     reps
