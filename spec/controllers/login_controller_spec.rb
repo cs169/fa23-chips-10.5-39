@@ -33,7 +33,7 @@ RSpec.describe LoginController, type: :controller do
       post :google_oauth2
     end
 
-    it 'creates a session for the user' do
+    it 'creates a google session for the user' do
       expect(session[:current_user_id]).not_to be_nil
     end
 
@@ -48,7 +48,7 @@ RSpec.describe LoginController, type: :controller do
       post :github
     end
 
-    it 'creates a session for the user' do
+    it 'creates a github session for the user' do
       expect(session[:current_user_id]).not_to be_nil
     end
 
