@@ -10,7 +10,8 @@ RSpec.describe NewsItem, type: :model do
 
     context 'when a news item exists for the representative' do
       let!(:news_item) do
-        described_class.create(representative: representative, title: 'Sample Title', link: 'sample_link')
+        described_class.create(representative: representative, title: 'Sample Title', link: 'sample_link',
+                               issue: 'Terrorism')
       end
 
       it 'finds the news item for the representative' do
