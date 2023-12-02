@@ -3,7 +3,7 @@
 <%= form_with url: campaign_finances_path, method: :get, local: true do |form| %>
   <div>
     <%= form.label :cycle, 'Election Cycle' %>
-    <%= form.select :cycle, options_for_select((1996..2023).step(2).map { |y| [y, y] }) %>
+    <%= form.select :cycle, options_for_select((1996..2023).step(2).map { |y| [y, y] }, selected: params[:cycle]) %>
   </div>
 
   <div>
@@ -11,7 +11,7 @@
     <%= form.select :category, options_for_select([
       ['Candidate Loan', 'candidate-loan'],
       ['Contribution Total', 'contribution-total'],
-    ]) %>
+    ], selected: params[:category]) %>
   </div>
 
   <%= form.submit 'Search' %>
