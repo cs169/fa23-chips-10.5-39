@@ -1,53 +1,40 @@
 # frozen_string_literal: true
 
 class Representative < ApplicationRecord
-  has_many :news_items, dependent: :delete_all
+  has_many :news_items, dependent: :destroy
 
   def self.civic_api_to_representative_params(rep_info)
     reps = []
 
     rep_info.officials.each_with_index do |official, index|
-      ocdid_temp = ''
-      title_temp = ''
-      rep_info.offices.each do |office|
-        if office.official_indices.include? index
-          title_temp = office.name
-          ocdid_temp = office.division_id
-        end
-      end
-      rep = if Representative.exists?(ocdid: ocdid_temp)
-              Representative.find_or_initialize_by(ocdid: ocdid_temp)
-            else
-              Representative.create!(title: title_temp, ocdid: ocdid_temp)
-            end
-      reps.push(update_rep_attributes(rep, official, title_temp))
+      rep_attributes = extract_representative_info(official, rep_info.offices, index)
+      rep = Representative.find_or_create_by(rep_attributes.slice(:name, :ocdid))
+      rep.update!(rep_attributes)
+      reps << rep
     end
+
     reps
   end
 
-  def self.get_addr(official)
-    return {} if official.address&.first.nil?
+  def self.extract_representative_info(official, offices, index)
+    related_office = offices.find { |office| office.official_indices.include?(index) }
+    division_id = related_office&.division_id || ''
+    office_title = related_office&.name || ''
 
     {
-      address: official.address.first.line1,
-      city:    official.address.first.city,
-      state:   official.address.first.state,
-      zip:     official.address.first.zip
+      name:            official.name,
+      ocdid:           division_id,
+      title:           office_title,
+      address:         address_detail(official, :line1),
+      city:            address_detail(official, :city),
+      state:           address_detail(official, :state),
+      zip:             address_detail(official, :zip),
+      political_party: official.party,
+      photo_url:       official.photo_url || ''
     }
   end
 
-  def self.update_rep_attributes(rep, official, title)
-    address = get_addr(official)
-    rep.update!(
-      name:            official.name,
-      title:           title,
-      address:         address[:address],
-      city:            address[:city],
-      state:           address[:state],
-      zip:             address[:zip],
-      political_party: official.party,
-      photo_url:       official.photo_url
-    )
-    rep
+  def self.address_detail(official, key)
+    official.address&.first&.public_send(key) || ''
   end
 end
